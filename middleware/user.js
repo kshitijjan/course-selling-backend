@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const {JWT_SECRET} = require('../config')
+require('dotenv').config();
 function userMiddleware(req, res, next) {
     // Implement user auth logic
     // You need to check the headers and validate the user from the user DB. Check readme for the exact headers to be expected
@@ -8,7 +8,7 @@ function userMiddleware(req, res, next) {
     const word = authHeader.split(" ");
     const token = word[1];
 
-    const isValidToken = jwt.verify(token, JWT_SECRET);
+    const isValidToken = jwt.verify(token, process.env.JWT_SECRET);
     if(isValidToken.username){
         req.username = isValidToken.username;
         next();

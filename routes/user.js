@@ -3,7 +3,7 @@ const router = Router();
 const userMiddleware = require("../middleware/user");
 const jwt = require("jsonwebtoken")
 const { User, Course } = require("../db");
-const { JWT_SECRET } = require("../config");
+require('dotenv').config();
 
 // User Routes
 router.post('/signup', async (req, res) => {
@@ -38,7 +38,7 @@ router.post('/signin', async (req, res) => {
         password
     })
     if(isValidUser){
-        const token = jwt.sign({username}, JWT_SECRET)
+        const token = jwt.sign({username}, process.env.JWT_SECRET)
         res.json({
             msg: `Bearer ${token}`
         })
@@ -94,7 +94,6 @@ router.post('/courses/:courseId', userMiddleware, async (req, res) => {
 router.get('/purchasedCourses', userMiddleware, async (req, res) => {
     // Implement fetching purchased courses logic
     const username = req.username;
-    console.log(username);
     
     const getAllPurchasedCourses = await User.findOne({
         username

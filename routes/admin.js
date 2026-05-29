@@ -2,7 +2,7 @@ const { Router } = require("express");
 const adminMiddleware = require("../middleware/admin");
 const { Admin, Course } = require("../db");
 const jwt = require('jsonwebtoken');
-const {JWT_SECRET} = require("../config");
+require('dotenv').config();
 const router = Router();
 
 // Admin Routes
@@ -31,7 +31,7 @@ router.post('/signin', async (req, res) => {
     }) 
     
     if(adminSignin){
-        const token = jwt.sign({username}, JWT_SECRET)
+        const token = jwt.sign({username}, process.env.JWT_SECRET)
         
         res.json({
             msg: `Bearer ${token}` 
